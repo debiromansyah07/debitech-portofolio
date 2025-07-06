@@ -72,20 +72,22 @@ const Certificate = ({ ImgSertif }) => {
 				</Box>
 
 				{/* Hover Overlay */}
-				<Box
-					className="overlay"
-					sx={{
-						position: "absolute",
-						top: 0,
-						left: 0,
-						right: 0,
-						bottom: 0,
-						opacity: 0,
-						transition: "all 0.3s ease",
-						cursor: "pointer",
-						zIndex: 2,
-					}}
-					onClick={handleOpen}>
+						<Box
+  className="overlay"
+  sx={{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    opacity: 0,
+    transition: "all 0.3s ease",
+    cursor: "pointer",
+    backgroundColor: "rgba(0,0,0,0.25)", // efek gelap saat hover
+    zIndex: 2,
+  }}
+  onClick={handleOpen}
+>
 					{/* Hover Content */}
 					<Box
 						className="hover-content"
