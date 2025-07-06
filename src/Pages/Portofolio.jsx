@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { supabase } from "../supabase";
+
+import { supabase } from "../supabase"; 
+
 import PropTypes from "prop-types";
+import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
@@ -13,9 +16,107 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Certificate from "../components/Certificate";
 import { Code, Award, Boxes } from "lucide-react";
-import SwipeableViews from "react-swipeable-views";
 
-// ...ToggleButton & TabPanel (sama persis, tidak perlu diubah)
+
+const ToggleButton = ({ onClick, isShowingMore }) => (
+  <button
+    onClick={onClick}
+    className="
+      px-3 py-1.5
+      text-slate-300 
+      hover:text-white 
+      text-sm 
+      font-medium 
+      transition-all 
+      duration-300 
+      ease-in-out
+      flex 
+      items-center 
+      gap-2
+      bg-white/5 
+      hover:bg-white/10
+      rounded-md
+      border 
+      border-white/10
+      hover:border-white/20
+      backdrop-blur-sm
+      group
+      relative
+      overflow-hidden
+    "
+  >
+    <span className="relative z-10 flex items-center gap-2">
+      {isShowingMore ? "See Less" : "See More"}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={`
+          transition-transform 
+          duration-300 
+          ${isShowingMore ? "group-hover:-translate-y-0.5" : "group-hover:translate-y-0.5"}
+        `}
+      >
+        <polyline points={isShowingMore ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}></polyline>
+      </svg>
+    </span>
+    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-500/50 transition-all duration-300 group-hover:w-full"></span>
+  </button>
+);
+
+
+function TabPanel({ children, value, index, ...other }) {
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: { xs: 1, sm: 3 } }}>
+          <Typography component="div">{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    "aria-controls": `full-width-tabpanel-${index}`,
+  };
+}
+
+// techStacks tetap sama
+const techStacks = [
+  { icon: "html.svg", language: "HTML" },
+  { icon: "css.svg", language: "CSS" },
+  { icon: "javascript.svg", language: "JavaScript" },
+  { icon: "tailwind.svg", language: "Tailwind CSS" },
+  { icon: "reactjs.svg", language: "ReactJS" },
+  { icon: "vite.svg", language: "Vite" },
+  { icon: "nodejs.svg", language: "Node JS" },
+  { icon: "bootstrap.svg", language: "Bootstrap" },
+  { icon: "firebase.svg", language: "Firebase" },
+  { icon: "MUI.svg", language: "Material UI" },
+  { icon: "vercel.svg", language: "Vercel" },
+  { icon: "SweetAlert.svg", language: "SweetAlert2" },
+];
 
 export default function FullWidthTabs() {
   const theme = useTheme();
@@ -28,39 +129,52 @@ export default function FullWidthTabs() {
   const initialItems = isMobile ? 4 : 6;
 
   useEffect(() => {
-    AOS.init({ once: false });
+    AOS.init({
+      once: false,
+    });
   }, []);
+
 
   const fetchData = useCallback(async () => {
     try {
-      const [projectsRes, certificatesRes] = await Promise.all([
-        supabase.from("projects").select("*").order("id", { ascending: true }),
-        supabase.from("certificates").select("*").order("id", { ascending: true }),
+      // Mengambil data dari Supabase secara paralel
+      const [projectsResponse, certificatesResponse] = await Promise.all([
+        supabase.from("projects").select("*").order('id', { ascending: true }),
+        supabase.from("certificates").select("*").order('id', { ascending: true }), 
       ]);
 
-      if (projectsRes.error || certificatesRes.error) throw new Error("Supabase fetch failed");
+      // Error handling untuk setiap request
+      if (projectsResponse.error) throw projectsResponse.error;
+      if (certificatesResponse.error) throw certificatesResponse.error;
 
-      const projectData = projectsRes.data || [];
-      const certificateData = certificatesRes.data || [];
+      // Supabase mengembalikan data dalam properti 'data'
+      const projectData = projectsResponse.data || [];
+      const certificateData = certificatesResponse.data || [];
 
       setProjects(projectData);
       setCertificates(certificateData);
 
+      // Store in localStorage (fungsionalitas ini tetap dipertahankan)
       localStorage.setItem("projects", JSON.stringify(projectData));
       localStorage.setItem("certificates", JSON.stringify(certificateData));
     } catch (error) {
-      console.warn("Fetch failed, trying cache:", error.message);
-
-      const cachedProjects = localStorage.getItem("projects");
-      const cachedCertificates = localStorage.getItem("certificates");
-
-      if (cachedProjects) setProjects(JSON.parse(cachedProjects));
-      if (cachedCertificates) setCertificates(JSON.parse(cachedCertificates));
+      console.error("Error fetching data from Supabase:", error.message);
     }
   }, []);
 
+
+
   useEffect(() => {
-    fetchData();
+    // Coba ambil dari localStorage dulu untuk laod lebih cepat
+    const cachedProjects = localStorage.getItem('projects');
+    const cachedCertificates = localStorage.getItem('certificates');
+
+    if (cachedProjects && cachedCertificates) {
+        setProjects(JSON.parse(cachedProjects));
+        setCertificates(JSON.parse(cachedCertificates));
+    }
+    
+    fetchData(); // Tetap panggil fetchData untuk sinkronisasi data terbaru
   }, [fetchData]);
 
   const handleChange = (event, newValue) => {
@@ -68,17 +182,16 @@ export default function FullWidthTabs() {
   };
 
   const toggleShowMore = useCallback((type) => {
-    if (type === "projects") {
-      setShowAllProjects((prev) => !prev);
+    if (type === 'projects') {
+      setShowAllProjects(prev => !prev);
     } else {
-      setShowAllCertificates((prev) => !prev);
+      setShowAllCertificates(prev => !prev);
     }
   }, []);
 
   const displayedProjects = showAllProjects ? projects : projects.slice(0, initialItems);
   const displayedCertificates = showAllCertificates ? certificates : certificates.slice(0, initialItems);
 
-  
   // Sisa dari komponen (return statement) tidak ada perubahan
   return (
     <div className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden" id="Portofolio">
@@ -226,7 +339,7 @@ export default function FullWidthTabs() {
           <TabPanel value={value} index={1} dir={theme.direction}>
             <div className="container mx-auto flex justify-center items-center overflow-hidden">
               <div className="grid grid-cols-1 md:grid-cols-3 md:gap-5 gap-4">
-                {displayedCertificates.map((certificate, index) => (
+                {[...new Map(displayedCertificates.map(item => [item.Img, item])).values()].map((certificate, index) => (
                   <div
                     key={certificate.id || index}
                     data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
