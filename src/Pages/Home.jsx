@@ -233,16 +233,16 @@ const Home = () => {
   style={{
     position: 'absolute',
     top: '50%',
-    right: '3rem',
+    right: '0rem',
     transform: 'translateY(-50%)',
-    width: '400px',
+    width: '600px',
     animation: 'fadeSlideIn 1.2s ease-in-out forwards',
     zIndex: 0,
-    pointerEvents: 'none',
+    pointerEvents: 'auto',
   }}
   className="hidden md:block"
 >
-  <img src="/Coding.gif" alt="Coding" style={{ width: '100%', height: 'auto' }} />
+    <spline-viewer url="https://prod.spline.design/kt4EZI6dloMJcXiu/scene.splinecode"></spline-viewer>
 </div>
 
               </div>
