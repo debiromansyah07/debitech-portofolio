@@ -166,7 +166,11 @@ const Home = () => {
               <div className="space-y-4 sm:space-y-6">
                 <StatusBadge />
                 <MainTitle />
-
+                <div className="block md:hidden w-full h-[300px] mt-6">
+                  <div style={{ width: '100%', height: '100%' }}>
+                    <spline-viewer url="https://prod.spline.design/kt4EZI6dloMJcXiu/scene.splinecode"></spline-viewer>
+                  </div>
+                </div>
                 {/* Typing Effect */}
                 <div className="h-8 flex items-center" data-aos="fade-up" data-aos-delay="800">
                   <span className="text-xl md:text-2xl bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent font-light">
@@ -229,8 +233,9 @@ const Home = () => {
                     isHovering ? "scale-110" : "scale-100"
                   }`}>
                   </div>
-                </div><div
-  style={{
+                </div>
+                <div
+    style={{
     position: 'absolute',
     top: '50%',
     right: '0rem',
@@ -240,13 +245,9 @@ const Home = () => {
     zIndex: 0,
     pointerEvents: 'auto',
   }}
-<div className="block md:hidden w-full h-[300px] mt-6">
-  <div style={{ width: '100%', height: '100%' }}>
-    <spline-viewer url="https://prod.spline.design/kt4EZI6dloMJcXiu/scene.splinecode"></spline-viewer>
-  </div>
-</div>
-
-
+  >
+                  <spline-viewer url="https://prod.spline.design/kt4EZI6dloMJcXiu/scene.splinecode"></spline-viewer>
+                </div>
               </div>
             </div>
           </div>
