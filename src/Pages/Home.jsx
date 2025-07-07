@@ -166,7 +166,7 @@ const Home = () => {
               <div className="space-y-4 sm:space-y-6">
                 <StatusBadge />
                 <MainTitle />
-                <div className="block md:hidden w-full h-[450px] overflow-hidden mt-6">
+                <div className="block md:hidden w-full aspect-[3/3.5] overflow-hidden mt-6">
   <div style={{ width: '100%', height: '100%' }}>
     <spline-viewer
       url="https://prod.spline.design/kt4EZI6dloMJcXiu/scene.splinecode"
