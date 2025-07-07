@@ -235,7 +235,7 @@ const Home = () => {
     top: '50%',
     right: '0rem',
     transform: 'translateY(-50%)',
-    width: '600px',
+    width: '800px',
     animation: 'fadeSlideIn 1.2s ease-in-out forwards',
     zIndex: 0,
     pointerEvents: 'auto',
