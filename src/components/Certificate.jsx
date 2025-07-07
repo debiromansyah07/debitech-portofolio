@@ -15,6 +15,7 @@ const Certificate = ({ ImgSertif }) => {
 	}
 
 	return (
+		
 		<Box component="div" sx={{ width: "100%" }}>
 			{/* Thumbnail Container */}
 			<Box
@@ -177,6 +178,7 @@ const Certificate = ({ ImgSertif }) => {
 							maxHeight: "90vh",
 							margin: "0 auto",
 							objectFit: "contain",
+							backgroundColor: "#000", // opsional, untuk kotak hitam di belakang
 						}}
 					/>
 				</Box>

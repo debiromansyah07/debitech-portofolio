@@ -143,6 +143,8 @@ export default function FullWidthTabs() {
         supabase.from("certificates").select("*").order('id', { ascending: true }), 
       ]);
 
+      console.log("certificatesResponse", certificatesResponse);
+      
       // Error handling untuk setiap request
       if (projectsResponse.error) throw projectsResponse.error;
       if (certificatesResponse.error) throw certificatesResponse.error;
@@ -345,7 +347,7 @@ export default function FullWidthTabs() {
                     data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
                     data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
                   >
-                    <Certificate ImgSertif={certificate.Img} />
+                    <Certificate ImgSertif={certificate.img} />
                   </div>
                 ))}
               </div>
@@ -380,3 +382,4 @@ export default function FullWidthTabs() {
     </div>
   );
 }
+
