@@ -240,10 +240,12 @@ const Home = () => {
     zIndex: 0,
     pointerEvents: 'auto',
   }}
-  className="hidden md:block"
->
+<div className="block md:hidden w-full h-[300px] mt-6">
+  <div style={{ width: '100%', height: '100%' }}>
     <spline-viewer url="https://prod.spline.design/kt4EZI6dloMJcXiu/scene.splinecode"></spline-viewer>
+  </div>
 </div>
+
 
               </div>
             </div>
