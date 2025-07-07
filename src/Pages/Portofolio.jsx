@@ -138,10 +138,14 @@ export default function FullWidthTabs() {
   const fetchData = useCallback(async () => {
     try {
       // Mengambil data dari Supabase secara paralel
-      const [projectsResponse, certificatesResponse] = await Promise.all([
-        supabase.from("projects").select("*").order('id', { ascending: true }),
-        supabase.from("certificates").select("*").order('id', { ascending: true }), 
-      ]);
+     const [projectsResponse, certificatesResponse] = await Promise.all([
+  supabase.from("projects").select("*").order("id", { ascending: true }),
+  supabase
+    .from("certificates")
+    .select("*")
+    .eq("is_pinned", true)
+    .order("id", { ascending: true }),
+]);
 
       console.log("certificatesResponse", certificatesResponse);
       
