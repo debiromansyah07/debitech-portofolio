@@ -166,11 +166,14 @@ const Home = () => {
               <div className="space-y-4 sm:space-y-6">
                 <StatusBadge />
                 <MainTitle />
-                <div className="block md:hidden w-full h-[300px] mt-6">
-                  <div style={{ width: '100%', height: '100%' }}>
-                    <spline-viewer url="https://prod.spline.design/kt4EZI6dloMJcXiu/scene.splinecode"></spline-viewer>
-                  </div>
-                </div>
+                <div className="block md:hidden w-full h-[450px] overflow-hidden mt-6">
+  <div style={{ width: '100%', height: '100%' }}>
+    <spline-viewer
+      url="https://prod.spline.design/kt4EZI6dloMJcXiu/scene.splinecode"
+      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+    />
+  </div>
+</div>
                 {/* Typing Effect */}
                 <div className="h-8 flex items-center" data-aos="fade-up" data-aos-delay="800">
                   <span className="text-xl md:text-2xl bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent font-light">
